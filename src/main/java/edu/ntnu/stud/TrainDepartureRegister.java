@@ -2,22 +2,115 @@ package edu.ntnu.stud;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * This class holds a list of train departures.
+ * The list of train departures is stored in an ArrayList.
+ *
+ * @author 562289
+ * @version 0.2
+ * @since 0.1
+ */
 
 public class TrainDepartureRegister {
-  ArrayList<TrainDeparture> trainDepartures;
+  private final ArrayList<TrainDeparture> trainDepartures;
+  private LocalTime time;
 
-  public TrainDepartureRegister() {
-    trainDepartures = new ArrayList<>();
+  public TrainDepartureRegister(int timeHour, int timeMinute) {
+    this.trainDepartures = new ArrayList<>();
+    this.time = LocalTime.of(timeHour, timeMinute);
   }
-  public void addTrainDeparture(LocalTime departureTime, String line, int trainNumber, String destination, int track, LocalTime delay) {
-    TrainDeparture trainDeparture = new TrainDeparture(departureTime, line, trainNumber, destination, track, delay);
-    trainDepartures.add(trainDeparture);
 
+  /**
+   * Sets the time.
+   *
+   * @param hour sets the hour
+   * @param minute sets the minute
+   * @return the time
+   */
+  public LocalTime setTime(int hour, int minute) {
+
+    time = LocalTime.of(hour, minute);
+    return time;
   }
+
+  public LocalTime getTime() {
+    return time;
+  }
+
+  /**
+   * Searches for a train departure with the given train number.
+   *
+   * @param trainNumber the train number to search for
+   * @return the train departure with the given train number
+   *     or null if no such train departure exists
+   */
   public TrainDeparture searchTrainDepartureByTrainNumber(int trainNumber) {
     return trainDepartures.stream()
         .filter(trainDeparture -> trainDeparture.getTrainNumber() == trainNumber)
         .findFirst()
         .orElse(null);
   }
+
+  /**
+   * Adds a train departure to the list of train departures.
+   *
+   * @param departureHour the hour of the departure time
+   * @param departureMinute the minute of the departure time
+   * @param line the line
+   * @param trainNumber the train number
+   * @param destination the destination
+   * @param track the track
+   * @param delayHour the hour of the delay
+   * @param delayMinute the minute of the delay
+   * @return true if the train departure was added successfully
+   *     or false if a train departure with the same train number already exists
+   */
+  public boolean addTrainDeparture(int departureHour, int departureMinute, String line, int trainNumber, String destination, int track, int delayHour, int delayMinute) {
+    TrainDeparture existingTrainDeparture = searchTrainDepartureByTrainNumber(trainNumber);
+    if (existingTrainDeparture != null) {
+      // A train departure with the same train number already exists
+      return false;
+    }
+    TrainDeparture newTrainDeparture = new TrainDeparture(departureHour, departureMinute, line, trainNumber, destination, track, delayHour, delayMinute);
+    trainDepartures.add(newTrainDeparture);
+    return true;
+  }
+
+  /**
+   * Searches for a train departures by destination.
+   *
+   * @param destination the destination to search for
+   * @return a list of train departures with the given destination
+   */
+  public List<TrainDeparture> searchTrainDeparturesByDestination(String destination) {
+    return trainDepartures.stream()
+        .filter(trainDeparture -> trainDeparture.getDestination().equals(destination))
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Removes the trains with departures after the given time.
+   *
+   * @param time the time to remove after
+   */
+  public void removeTrainDeparturesBeforeTime(LocalTime time) {
+    trainDepartures.removeIf(trainDeparture ->
+        trainDeparture.getActualDepartureTime().isBefore(time));
+  }
+
+  /**
+   * Sorts the train departures by departure time.
+   *
+   * @return a list of train departures sorted by departure time
+   */
+  public List<TrainDeparture> getTimeSortedTrainDepartures() {
+    return trainDepartures.stream()
+        .sorted(Comparator.comparing(TrainDeparture::getDepartureTime))
+        .collect(Collectors.toList());
+  }
+
 }
