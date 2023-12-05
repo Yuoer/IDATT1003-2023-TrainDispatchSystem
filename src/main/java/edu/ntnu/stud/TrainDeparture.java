@@ -18,7 +18,7 @@ import java.time.LocalTime;
  *
  *
  * @author 562289
- * @version 0.3
+ * @version 0.4
  * @since 0.1
  */
 
@@ -38,7 +38,7 @@ public class TrainDeparture {
    * @param minute the minute to verify
    *
    * @throws IllegalArgumentException if the hour is less than 0 or greater than 23
-   * or if the minute is less than 0 or greater than 59
+   *     or if the minute is less than 0 or greater than 59
    */
   public void verifyTime(int hour, int minute) throws IllegalArgumentException {
     if (hour < 0 || hour > 23) {
@@ -55,8 +55,8 @@ public class TrainDeparture {
    * @param line the line to verify
    *
    * @throws IllegalArgumentException if the line is null
-   * or if the line is less than 2 or greater than 3 characters
-   * or if the line contains characters other than capital letters and numbers
+   *     or if the line is less than 2 or greater than 3 characters
+   *     or if the line contains characters other than capital letters and numbers
    */
   public void verifyLine(String line) throws IllegalArgumentException {
     if (line.length() < 2 || line.length() > 3) {
@@ -86,8 +86,8 @@ public class TrainDeparture {
    * @param destination the destination to verify
    *
    * @throws IllegalArgumentException if the destination is null
-   * or if the destination is less than 2 or greater than 30 characters
-   * or if the destination contains characters other than letters
+   *     or if the destination is less than 2 or greater than 30 characters
+   *     or if the destination contains characters other than letters
    */
   public void verifyDestination(String destination) throws IllegalArgumentException {
     if (destination.length() < 2 || destination.length() > 30) {
@@ -202,6 +202,10 @@ public class TrainDeparture {
    */
   public LocalTime getDelay() {
     return this.delay;
+  }
+
+  public LocalTime getActualDepartureTime() {
+    return this.departureTime.plusHours(this.delay.getHour()).plusMinutes(this.delay.getMinute());
   }
 
   /**
