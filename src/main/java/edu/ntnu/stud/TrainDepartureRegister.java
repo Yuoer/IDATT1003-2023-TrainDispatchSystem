@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * The list of train departures is stored in an ArrayList.
  *
  * @author 562289
- * @version 0.2
+ * @version 0.3
  * @since 0.1
  */
 
@@ -25,16 +25,39 @@ public class TrainDepartureRegister {
   }
 
   /**
+   * Verifies that the hour and minute are valid.
+   *
+   * @param hour the hour to verify
+   *
+   * @param minute the minute to verify
+   *
+   * @throws IllegalArgumentException if the hour is less than 0 or greater than 23
+   *     or if the minute is less than 0 or greater than 59
+   */
+  public void verifyTime(int hour, int minute) throws IllegalArgumentException {
+    if (hour < 0 || hour > 23) {
+      throw new IllegalArgumentException("Hour must be between 0 and 23");
+    }
+    if (minute < 0 || minute > 59) {
+      throw new IllegalArgumentException("Minute must be between 0 and 59");
+    }
+  }
+
+  /**
    * Sets the time.
    *
    * @param hour sets the hour
    * @param minute sets the minute
    * @return the time
    */
-  public LocalTime setTime(int hour, int minute) {
-
-    time = LocalTime.of(hour, minute);
-    return time;
+  public LocalTime setTime(int hour, int minute) throws IllegalArgumentException {
+    verifyTime(hour, minute);
+    if (this.time.isAfter(LocalTime.of(hour, minute))) {
+      throw new IllegalArgumentException("Time must be after current time");
+    } else {
+      time = LocalTime.of(hour, minute);
+      return time;
+    }
   }
 
   public LocalTime getTime() {
@@ -66,18 +89,19 @@ public class TrainDepartureRegister {
    * @param track the track
    * @param delayHour the hour of the delay
    * @param delayMinute the minute of the delay
-   * @return true if the train departure was added successfully
-   *     or false if a train departure with the same train number already exists
+   * @throws IllegalArgumentException if the train number already exists
    */
-  public boolean addTrainDeparture(int departureHour, int departureMinute, String line, int trainNumber, String destination, int track, int delayHour, int delayMinute) {
+  public void addTrainDeparture(int departureHour, int departureMinute, String line,
+                                   int trainNumber, String destination, int track, int delayHour,
+                                   int delayMinute) throws IllegalArgumentException {
     TrainDeparture existingTrainDeparture = searchTrainDepartureByTrainNumber(trainNumber);
     if (existingTrainDeparture != null) {
       // A train departure with the same train number already exists
-      return false;
+      throw new IllegalArgumentException("Train number already exists");
     }
-    TrainDeparture newTrainDeparture = new TrainDeparture(departureHour, departureMinute, line, trainNumber, destination, track, delayHour, delayMinute);
+    TrainDeparture newTrainDeparture = new TrainDeparture(departureHour, departureMinute, line,
+        trainNumber, destination, track, delayHour, delayMinute);
     trainDepartures.add(newTrainDeparture);
-    return true;
   }
 
   /**
