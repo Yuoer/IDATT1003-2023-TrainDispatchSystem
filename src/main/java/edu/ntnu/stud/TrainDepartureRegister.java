@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * The list of train departures is stored in an ArrayList.
  *
  * @author 562289
- * @version 0.3
+ * @version 0.4
  * @since 0.1
  */
 
@@ -46,17 +46,16 @@ public class TrainDepartureRegister {
   /**
    * Sets the time.
    *
-   * @param hour sets the hour
+   * @param hour   sets the hour
    * @param minute sets the minute
-   * @return the time
    */
-  public LocalTime setTime(int hour, int minute) throws IllegalArgumentException {
+  public void setTime(int hour, int minute) throws IllegalArgumentException {
     verifyTime(hour, minute);
     if (this.time.isAfter(LocalTime.of(hour, minute))) {
       throw new IllegalArgumentException("Time must be after current time");
     } else {
       time = LocalTime.of(hour, minute);
-      return time;
+      removeTrainDeparturesBeforeTime(time);
     }
   }
 
@@ -137,4 +136,32 @@ public class TrainDepartureRegister {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Finds a train departure by train number and sets the delay.
+   *
+   * @param trainNumber the train number
+   * @param delayHour the hour of the delay
+   * @param delayMinute the minute of the delay
+   */
+  public void setTrainDelay(int trainNumber, int delayHour, int delayMinute) {
+    TrainDeparture trainDeparture = searchTrainDepartureByTrainNumber(trainNumber);
+    if (trainDeparture == null) {
+      throw new IllegalArgumentException("Train number does not exist");
+    }
+    trainDeparture.setDelay(delayHour, delayMinute);
+  }
+
+  /**
+   * Finds a train departure by train number and sets the track.
+   *
+   * @param trainNumber the train number
+   * @param track the track
+   */
+  public void setTrainTrack(int trainNumber, int track) {
+    TrainDeparture trainDeparture = searchTrainDepartureByTrainNumber(trainNumber);
+    if (trainDeparture == null) {
+      throw new IllegalArgumentException("Train number does not exist");
+    }
+    trainDeparture.setTrack(track);
+  }
 }
