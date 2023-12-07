@@ -18,7 +18,7 @@ import java.time.LocalTime;
  *
  *
  * @author 562289
- * @version 0.4
+ * @version 0.5
  * @since 0.1
  */
 
@@ -93,7 +93,7 @@ public class TrainDeparture {
     if (destination.length() < 2 || destination.length() > 30) {
       throw new IllegalArgumentException("Destination must be between 2 and 30 characters");
     }
-    if (!destination.matches("[a-zA-ZæøåÆØÅ]+")) {
+    if (!destination.matches("[a-zA-ZæøåÆØÅ ]+")) {
       throw new IllegalArgumentException("Destination must contain only letters");
     }
   }
@@ -244,8 +244,7 @@ public class TrainDeparture {
    * @return String object of the train departure
    */
   public String toString() {
-    return "TrainDeparture{" + "departureTime=" + departureTime + ", line='" + line + '\'' + ","
-        + " trainNumber=" + trainNumber + ", destination='" + destination + '\'' + ", track="
-        + track + ", delay=" + delay + '}';
+    return String.format("| %-14s | %-4s | %-12d | %-15s | %-5d | %-5s |",
+        departureTime, line, trainNumber, destination, track, delay);
   }
 }
