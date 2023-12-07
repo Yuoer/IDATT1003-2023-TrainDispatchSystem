@@ -136,6 +136,10 @@ public class TrainDepartureRegister {
         .collect(Collectors.toList());
   }
 
+  public List<TrainDeparture> getTrainDepartures() {
+    return trainDepartures;
+  }
+
   /**
    * Finds a train departure by train number and sets the delay.
    *
@@ -163,5 +167,31 @@ public class TrainDepartureRegister {
       throw new IllegalArgumentException("Train number does not exist");
     }
     trainDeparture.setTrack(track);
+  }
+
+  /**
+   * Prints the train departures sorted by departure time as a table.
+   */
+  public void printSortedTrainDepartures() {
+    System.out.println("| Departure Time | Line | Train Number |   Destination   | Track | "
+        + "Delay | Time: " + getTime());
+    System.out.println("|----------------|------|--------------|-----------------|-------"
+        + "|-------|");
+    for (TrainDeparture data : getTimeSortedTrainDepartures()) {
+      System.out.println(data.toString());
+    }
+  }
+
+  /**
+   * Prints the train departures as a table.
+   */
+  public void printTrainDepartures() {
+    System.out.println("| Departure Time | Line | Train Number |   Destination   | Track | "
+        + "Delay | Time: " + getTime());
+    System.out.println("|----------------|------|--------------|-----------------|-------"
+        + "|-------|");
+    for (TrainDeparture data : getTrainDepartures()) {
+      System.out.println(data.toString());
+    }
   }
 }
