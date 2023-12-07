@@ -18,7 +18,7 @@ import java.time.LocalTime;
  *
  *
  * @author 562289
- * @version 0.5
+ * @version 0.6
  * @since 0.1
  */
 
@@ -204,12 +204,17 @@ public class TrainDeparture {
     return this.delay;
   }
 
+  /**
+   * Returns a LocalTime object of the actual departure time of the train departure.
+   *
+   * @return actual departure time of the train
+   */
   public LocalTime getActualDepartureTime() {
     return this.departureTime.plusHours(this.delay.getHour()).plusMinutes(this.delay.getMinute());
   }
 
   /**
-   * Sets the line of the train departure.
+   * Verifies and sets the line of the train departure.
    *
    * @param line the line of the train
    */
@@ -219,7 +224,7 @@ public class TrainDeparture {
   }
 
   /**
-   * Sets the track of the train departure.
+   * Verifies and sets the track of the train departure.
    *
    * @param track the track of the train
    */
@@ -229,7 +234,7 @@ public class TrainDeparture {
   }
 
   /**
-   * Sets the delay of the train departure.
+   * Verifies and sets the delay of the train departure.
    *
    * @param delayHour the delay of the train
    */
@@ -245,6 +250,6 @@ public class TrainDeparture {
    */
   public String toString() {
     return String.format("| %-14s | %-4s | %-12d | %-15s | %-5d | %-5s |",
-        departureTime, line, trainNumber, destination, track, delay);
+        getDepartureTime(), getLine(), getTrainNumber(), getDestination(), getTrack(), getDelay());
   }
 }
