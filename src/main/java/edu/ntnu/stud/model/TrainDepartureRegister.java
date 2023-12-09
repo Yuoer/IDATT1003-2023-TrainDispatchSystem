@@ -1,17 +1,19 @@
-package edu.ntnu.stud;
+package edu.ntnu.stud.model;
 
+import edu.ntnu.stud.model.TrainDeparture;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 /**
  * This class holds a list of train departures.
  * The list of train departures is stored in an ArrayList.
  *
  * @author 562289
- * @version 0.4
+ * @version 0.5
  * @since 0.1
  */
 
@@ -44,37 +46,16 @@ public class TrainDepartureRegister {
   }
 
   /**
-   * Sets the time.
+   * Verifies that the train number is valid.
    *
-   * @param hour   sets the hour
-   * @param minute sets the minute
+   * @param trainNumber the train number to verify
+   *
+   * @throws IllegalArgumentException if the train number is less than 0
    */
-  public void setTime(int hour, int minute) throws IllegalArgumentException {
-    verifyTime(hour, minute);
-    if (this.time.isAfter(LocalTime.of(hour, minute))) {
-      throw new IllegalArgumentException("Time must be after current time");
-    } else {
-      time = LocalTime.of(hour, minute);
-      removeTrainDeparturesBeforeTime(time);
+  public void verifyTrainNumber(int trainNumber) throws IllegalArgumentException {
+    if (trainNumber < 1 || trainNumber > 999) {
+      throw new IllegalArgumentException("Train number has to be between 1 and 999");
     }
-  }
-
-  public LocalTime getTime() {
-    return time;
-  }
-
-  /**
-   * Searches for a train departure with the given train number.
-   *
-   * @param trainNumber the train number to search for
-   * @return the train departure with the given train number
-   *     or null if no such train departure exists
-   */
-  public TrainDeparture searchTrainDepartureByTrainNumber(int trainNumber) {
-    return trainDepartures.stream()
-        .filter(trainDeparture -> trainDeparture.getTrainNumber() == trainNumber)
-        .findFirst()
-        .orElse(null);
   }
 
   /**
@@ -91,8 +72,8 @@ public class TrainDepartureRegister {
    * @throws IllegalArgumentException if the train number already exists
    */
   public void addTrainDeparture(int departureHour, int departureMinute, String line,
-                                   int trainNumber, String destination, int track, int delayHour,
-                                   int delayMinute) throws IllegalArgumentException {
+                                int trainNumber, String destination, int track, int delayHour,
+                                int delayMinute) throws IllegalArgumentException {
     TrainDeparture existingTrainDeparture = searchTrainDepartureByTrainNumber(trainNumber);
     if (existingTrainDeparture != null) {
       // A train departure with the same train number already exists
@@ -100,17 +81,77 @@ public class TrainDepartureRegister {
     }
     TrainDeparture newTrainDeparture = new TrainDeparture(departureHour, departureMinute, line,
         trainNumber, destination, track, delayHour, delayMinute);
+    if (newTrainDeparture.getActualDepartureTime().isBefore(getTime())) {
+      // The actual departure time is before the current time
+      throw new IllegalArgumentException("Actual departure time must be after current time");
+    }
     trainDepartures.add(newTrainDeparture);
   }
 
   /**
+   * Gets the list of train departures.
+   *
+   * @return the list of train departures
+   */
+  public List<TrainDeparture> getTrainDepartures() {
+    return trainDepartures;
+  }
+
+  /**
+   * Gets the time.
+   *
+   * @return the time
+   */
+  public LocalTime getTime() {
+    return time;
+  }
+
+  /**
+   * Sets the time to the given hour and minute if the time is after the current time.
+   * Otherwise, an IllegalArgumentException is thrown.
+   * Removes the train departures before the new time.
+   *
+   * @param hour   sets the hour
+   * @param minute sets the minute
+   */
+  public void setTime(int hour, int minute) throws IllegalArgumentException {
+    verifyTime(hour, minute);
+    if (getTime().isAfter(LocalTime.of(hour, minute))) {
+      throw new IllegalArgumentException("Time must be after current time");
+    } else {
+      time = LocalTime.of(hour, minute);
+      removeTrainDeparturesBeforeTime(getTime());
+    }
+  }
+
+  /**
+   * Searches for a train departure with the given train number.
+   * Throws IllegalArgumentException if the train number is invalid.
+   *
+   * @param trainNumber the train number to search for
+   * @return the train departure with the given train number
+   *     or null if no such train departure exists
+   */
+  public TrainDeparture searchTrainDepartureByTrainNumber(int trainNumber)
+      throws IllegalArgumentException {
+    verifyTrainNumber(trainNumber);
+    return getTrainDepartures().stream()
+        .filter(trainDeparture -> trainDeparture.getTrainNumber() == trainNumber)
+        .findFirst()
+        .orElse(null);
+  }
+
+  /**
    * Searches for a train departures by destination.
+   * Todo: Return null if no such train departure exists.
    *
    * @param destination the destination to search for
    * @return a list of train departures with the given destination
    */
-  public List<TrainDeparture> searchTrainDeparturesByDestination(String destination) {
-    return trainDepartures.stream()
+  public List<TrainDeparture> searchTrainDeparturesByDestination(String destination)
+      throws IllegalArgumentException {
+
+    return getTrainDepartures().stream()
         .filter(trainDeparture -> trainDeparture.getDestination().equals(destination))
         .collect(Collectors.toList());
   }
@@ -131,14 +172,11 @@ public class TrainDepartureRegister {
    * @return a list of train departures sorted by departure time
    */
   public List<TrainDeparture> getTimeSortedTrainDepartures() {
-    return trainDepartures.stream()
+    return getTrainDepartures().stream()
         .sorted(Comparator.comparing(TrainDeparture::getDepartureTime))
         .collect(Collectors.toList());
   }
 
-  public List<TrainDeparture> getTrainDepartures() {
-    return trainDepartures;
-  }
 
   /**
    * Finds a train departure by train number and sets the delay.
@@ -146,6 +184,7 @@ public class TrainDepartureRegister {
    * @param trainNumber the train number
    * @param delayHour the hour of the delay
    * @param delayMinute the minute of the delay
+   * @throws IllegalArgumentException if the train number does not exist
    */
   public void setTrainDelay(int trainNumber, int delayHour, int delayMinute) {
     TrainDeparture trainDeparture = searchTrainDepartureByTrainNumber(trainNumber);
@@ -160,6 +199,7 @@ public class TrainDepartureRegister {
    *
    * @param trainNumber the train number
    * @param track the track
+   * @throws IllegalArgumentException if the train number does not exist
    */
   public void setTrainTrack(int trainNumber, int track) {
     TrainDeparture trainDeparture = searchTrainDepartureByTrainNumber(trainNumber);
@@ -169,29 +209,34 @@ public class TrainDepartureRegister {
     trainDeparture.setTrack(track);
   }
 
-  /**
-   * Prints the train departures sorted by departure time as a table.
-   */
-  public void printSortedTrainDepartures() {
-    System.out.println("| Departure Time | Line | Train Number |   Destination   | Track | "
-        + "Delay | Time: " + getTime());
-    System.out.println("|----------------|------|--------------|-----------------|-------"
-        + "|-------|");
-    for (TrainDeparture data : getTimeSortedTrainDepartures()) {
-      System.out.println(data.toString());
-    }
+
+  public String printTimeSortedTrainDepartures() {
+    return getTimeSortedTrainDepartures().stream()
+        .map(TrainDeparture::toString)
+        .collect(Collectors.joining("\n"));
   }
+
+  public String printTrainDeparturesByDestination(String destination) {
+    return searchTrainDeparturesByDestination(destination).stream()
+        .map(TrainDeparture::toString)
+        .collect(Collectors.joining("\n"));
+  }
+
+  public String printTrainDepartureByTrainNumber(int trainNumber) {
+    return searchTrainDepartureByTrainNumber(trainNumber).toString();
+  }
+
+
 
   /**
    * Prints the train departures as a table.
+   *
+   * @return the train departures as a table
    */
-  public void printTrainDepartures() {
-    System.out.println("| Departure Time | Line | Train Number |   Destination   | Track | "
-        + "Delay | Time: " + getTime());
-    System.out.println("|----------------|------|--------------|-----------------|-------"
-        + "|-------|");
-    for (TrainDeparture data : getTrainDepartures()) {
-      System.out.println(data.toString());
-    }
+  public String toString() {
+    return getTrainDepartures().stream()
+        .map(TrainDeparture::toString)
+        .collect(Collectors.joining("\n"));
   }
+
 }

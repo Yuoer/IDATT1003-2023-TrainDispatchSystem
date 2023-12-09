@@ -1,4 +1,4 @@
-package edu.ntnu.stud;
+package edu.ntnu.stud.model;
 
 import java.time.LocalTime;
 
@@ -18,7 +18,7 @@ import java.time.LocalTime;
  *
  *
  * @author 562289
- * @version 0.6
+ * @version 0.7
  * @since 0.1
  */
 
@@ -248,8 +248,15 @@ public class TrainDeparture {
    *
    * @return String object of the train departure
    */
+  @Override
   public String toString() {
-    return String.format("| %-14s | %-4s | %-12d | %-15s | %-5d | %-5s |",
-        getDepartureTime(), getLine(), getTrainNumber(), getDestination(), getTrack(), getDelay());
+    if (getTrack() == -1) {
+      return String.format("| %-14s | %-4s | %-12d | %-15s | %-5s | %-5s |",
+          getDepartureTime(), getLine(), getTrainNumber(), getDestination(), getDelay(), "");
+    } else {
+      return String.format("| %-14s | %-4s | %-12d | %-15s | %-5s | %-5d |",
+          getDepartureTime(), getLine(), getTrainNumber(), getDestination(), getDelay(),
+          getTrack());
+    }
   }
 }
