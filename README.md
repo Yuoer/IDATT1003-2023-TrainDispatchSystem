@@ -1,31 +1,27 @@
-# Portfolio project IDATA1003 - 2023
-This file uses Mark Down syntax. For more information see [here](https://www.markdownguide.org/basic-syntax/).
+# Portfolio project IDATT1003 - 2023
 
-STUDENT NAME = "Your name"  
-STUDENT ID = "Your ID"
+STUDENT NAME = "August Reitan Bøgseth"  
+CANDIDATE NUMBER = "10054"
 
 ## Project description
 
-[//]: # (TODO: Write a short description of your project/product here.)
+This is an application that handles train departures from a train station.
 
 ## Project structure
 
-[//]: # (TODO: Describe the structure of your project here. How have you used packages in your structure. Where are all sourcefiles stored. Where are all JUnit-test classes stored. etc.)
+The project consists mainly of two directories 'main' and 'test'. The 'main' directory contains the main code for the 
+application, while the 'test' directory contains the test code for the application. The 'main' directory contains the
+following subdirectories: 'launcher', 'model' and  'view'.
 
 ## Link to repository
 
-[//]: # (TODO: Include a link to your repository here.)
+https://github.com/Yuoer/IDATT1003-2023-TrainDispatchSystem
 
 ## How to run the project
 
-[//]: # (TODO: Describe how to run your project here. What is the main class? What is the main method?
-What is the input and output of the program? What is the expected behaviour of the program?)
+To run the project, you need to run the main method in the 'TrainDispatchApp' in the 'launcher' subdirectory.
 
 ## How to run the tests
 
-[//]: # (TODO: Describe how to run the tests here.)
+To run the tests, you ned to run the test-classes in the 'test' directory.
 
-## References
-
-[//]: # (TODO: Include references here, if any. For example, if you have used code from the course book, include a reference to the chapter.
-Or if you have used code from a website or other source, include a link to the source.)
