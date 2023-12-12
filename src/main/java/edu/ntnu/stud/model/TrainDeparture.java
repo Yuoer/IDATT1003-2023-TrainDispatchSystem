@@ -17,14 +17,14 @@ import java.time.LocalTime;
  * and the actual departure time.
  *
  *
- * @author 562289
- * @version 0.7
+ * @author 10054
+ * @version 1.0
  * @since 0.1
  */
 
 public class TrainDeparture {
   private final LocalTime departureTime;
-  private String line;
+  private final String line;
   private final int trainNumber;
   private final String destination;
   private int track;
@@ -155,7 +155,8 @@ public class TrainDeparture {
   }
 
   /**
-   * Returns a String object of the train departure.
+   * Returns a String object of the train departure. If the track is -1,
+   * the track is not set and the String object does not contain the track.
    *
    * @return String object of the train departure
    */

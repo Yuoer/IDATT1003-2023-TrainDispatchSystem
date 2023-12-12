@@ -6,6 +6,10 @@ import java.util.Scanner;
 /**
  * A class for scanning input from the user. It also uses try and catch to verify the input and
  * prints out an error message to the user if the input is invalid.
+ *
+ * @author 10054
+ * @version 1.0
+ * @since 0.1
  */
 public class Scan {
 

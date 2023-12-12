@@ -5,8 +5,8 @@ import edu.ntnu.stud.view.UserInterface;
 /**
  * This is the main class for the train dispatch application.
  *
- * @author 562289
- * @version 0.2
+ * @author 10054
+ * @version 1.0
  * @since 0.1
  */
 public class TrainDispatchApp {

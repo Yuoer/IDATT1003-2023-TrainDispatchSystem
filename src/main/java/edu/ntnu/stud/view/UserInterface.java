@@ -4,15 +4,15 @@ import edu.ntnu.stud.model.TrainDepartureRegister;
 import java.util.Scanner;
 
 /**
- * This is the user interface class for the train dispatch application.
+ * This is the user interface class for the train dispatch application. It contains the main menu
+ * and the sub menus for the different user choices and prints information to the user.
  *
- * @author 562289
- * @version 0.2
+ * @author 10054
+ * @version 1.0
  * @since 0.1
  */
 public class UserInterface {
   TrainDepartureRegister trainDepartureRegister;
-  Scanner scanner = new Scanner(System.in);
   private static final int ADD_TRAIN_DEPARTURE = 1;
   private static final int SEARCH_TRAIN_NUMBER = 2;
   private static final int SEARCH_DESTINATION = 3;
@@ -45,7 +45,7 @@ public class UserInterface {
   /**
    * Prints the table header for the train departure register.
    */
-  public final void printTableHeader() {
+  private void printTableHeader() {
     System.out.println("-----------------------------------------------------------------"
         + "---------");
     System.out.println("| Departure Time | Line | Train Number |   Destination   | Delay | "
@@ -133,7 +133,7 @@ public class UserInterface {
    * invalid and cannot be added to the register. Also catches exceptions and prints the appropriate
    * error message if the train number already exists in the register.
    */
-  public void inputAddDeparture() {
+  private void inputAddDeparture() {
     System.out.println("Adding a new train departure");
 
     System.out.println("Enter the departure hour:");
@@ -175,7 +175,7 @@ public class UserInterface {
    * Checks if the train number exists in the register and prints the appropriate error message if
    * it does not.
    */
-  public void inputSearchTrainNumber() {
+  private void inputSearchTrainNumber() {
     System.out.println("Searching for a train departure by train number");
 
     System.out.println("Enter the train number:");
@@ -194,7 +194,7 @@ public class UserInterface {
    * train departures. Checks if the destination exists in the register and prints the appropriate
    * error message if it does not.
    */
-  public void inputSearchDestination() {
+  private void inputSearchDestination() {
     System.out.println("Searching for train departures by destination");
 
     System.out.println("Enter the destination:");
@@ -214,7 +214,7 @@ public class UserInterface {
    * Prints the list of train departures sorted by time. Catches an exception and prints the
    * appropriate error message if the register is empty.
    */
-  public void printSortedTrainDepartures() {
+  private void printSortedTrainDepartures() {
     try {
       System.out.println("Printing the list of train departures sorted by time");
       String sortedTrainDepartures = trainDepartureRegister.printTimeSortedTrainDepartures();
@@ -230,7 +230,7 @@ public class UserInterface {
    * departures. Checks if the train number exists in the register and prints the appropriate error
    * message if it does not.
    */
-  public void inputSetTrainDelay() {
+  private void inputSetTrainDelay() {
     System.out.println("Setting the delay of a train departure");
 
     System.out.println("Enter the train number:");
@@ -255,7 +255,7 @@ public class UserInterface {
    * departures. Checks if the train number exists in the register and prints the appropriate error
    * message if it does not.
    */
-  public void inputSetTrainTrack() {
+  private void inputSetTrainTrack() {
     System.out.println("Assigning a track to a train departure");
 
     System.out.println("Enter the train number:");
@@ -277,7 +277,7 @@ public class UserInterface {
    * Catches an exception and prints the appropriate error message if the time is before the current
    * time.
    */
-  public void inputSetTime() {
+  private void inputSetTime() {
     System.out.println("Setting the time of the clock");
 
     System.out.println("Enter the hour:");

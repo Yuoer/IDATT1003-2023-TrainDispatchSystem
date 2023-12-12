@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
 
 /**
- * Test class for TrainDepartureRegister
+ * Test class for TrainDepartureRegister. This class tests the print methods, get methods, set
+ * methods and addTrainDeparture method.
  *
  */
 public class TrainDepartureRegisterTest {

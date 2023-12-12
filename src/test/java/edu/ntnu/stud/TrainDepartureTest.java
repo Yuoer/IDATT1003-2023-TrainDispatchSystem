@@ -2,6 +2,7 @@ package edu.ntnu.stud;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.ntnu.stud.model.TrainDeparture;
 import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
 
 /**
- * Test class for TrainDeparture
+ * Test class for TrainDeparture. Tests the constructor, get methods and toString method.
  *
  */
 
@@ -342,12 +343,7 @@ class TrainDepartureTest {
   @Nested
   @DisplayName("Positive tests for set methods")
   class positiveSetTests {
-    @Test
-    @DisplayName("Test for setLine")
-    void testSetLine() {
-      trainDeparture.setLine("B7");
-      assertEquals("B7", trainDeparture.getLine());
-    }
+
     @Test
     void testNegativeTrack() {
       trainDeparture.setTrack(1);
@@ -363,12 +359,7 @@ class TrainDepartureTest {
   @Nested
   @DisplayName("Negative tests for set methods")
   class negativeSetTests {
-    @Test
-    @DisplayName("Test for setLine")
-    void negativeTestSetLine() {
-      trainDeparture.setLine("B7");
-      assertNotEquals("B8", trainDeparture.getLine());
-    }
+
     @Test
     @DisplayName("Test for setTrack")
     void negativeTestSetTrack() {
@@ -380,50 +371,6 @@ class TrainDepartureTest {
     void negativeTestSetDelay() {
       trainDeparture.setDelay(1, 0);
       assertNotEquals(LocalTime.of(1, 1), trainDeparture.getDelay());
-    }
-
-    @Test
-    @DisplayName("Test setLine for under 2 characters")
-    void setLineTooShortThrowsException() {
-      try {
-        trainDeparture.setLine("F");
-        fail("The test failed since it did not throw an IllegalArgumentException");
-      } catch (IllegalArgumentException e) {
-        assertEquals("Line must be between 2 and 3 characters", e.getMessage());
-      }
-    }
-
-    @Test
-    @DisplayName("Test setLine for over 3 characters")
-    void setLineTooLongThrowsException() {
-      try {
-        trainDeparture.setLine("FG77");
-        fail("The test failed since it did not throw an IllegalArgumentException");
-      } catch (IllegalArgumentException e) {
-        assertEquals("Line must be between 2 and 3 characters", e.getMessage());
-      }
-    }
-
-    @Test
-    @DisplayName("Test setLine for special characters")
-    void setLineSpecialCharactersThrowsException() {
-      try {
-        trainDeparture.setLine("@#$");
-        fail("The test failed since it did not throw an IllegalArgumentException");
-      } catch (IllegalArgumentException e) {
-        assertEquals("Line must contain only capital letters and numbers", e.getMessage());
-      }
-    }
-
-    @Test
-    @DisplayName("Test setLine for lower case letters")
-    void setLineLowerCaseLettersThrowsException() {
-      try {
-        trainDeparture.setLine("f10");
-        fail("The test failed since it did not throw an IllegalArgumentException");
-      } catch (IllegalArgumentException e) {
-        assertEquals("Line must contain only capital letters and numbers", e.getMessage());
-      }
     }
 
     @Test
@@ -511,7 +458,7 @@ class TrainDepartureTest {
     @Test
     @DisplayName("Test for toString")
     void testToString() {
-    assertEquals("| 08:30          | L1   | 123          | Destination     | 2     | 00:00 |", trainDeparture.toString());
+    assertEquals("| 08:30          | L1   | 123          | Destination     | 00:00 | 2     |", trainDeparture.toString());
     }
 
     @Test
@@ -519,7 +466,7 @@ class TrainDepartureTest {
     void testToStringWithDelay() {
     TrainDeparture trainDepartureDelay =
         new TrainDeparture(8, 30, "L1", 123, "Destination", 2, 1, 0);
-    assertEquals("| 08:30          | L1   | 123          | Destination     | 2     | 01:00 |", trainDepartureDelay.toString());
+    assertEquals("| 08:30          | L1   | 123          | Destination     | 01:00 | 2     |", trainDepartureDelay.toString());
     }
   }
 

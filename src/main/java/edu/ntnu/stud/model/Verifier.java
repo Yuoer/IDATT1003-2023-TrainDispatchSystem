@@ -1,5 +1,13 @@
 package edu.ntnu.stud.model;
 
+/**
+ * This class contains methods for verifying that a train departure is only created with valid
+ * values. It throws an IllegalArgumentException if the values are invalid.
+ *
+ * @author 10054
+ * @version 1.0
+ * @since 0.1
+ */
 public class Verifier {
 
   /**
@@ -44,7 +52,7 @@ public class Verifier {
    *
    * @param trainNumber the train number to verify
    *
-   * @throws IllegalArgumentException if the train number is less than 0
+   * @throws IllegalArgumentException if the train number is less than 1 and greater than 999
    */
   public static void verifyTrainNumber(int trainNumber) throws IllegalArgumentException {
     if (trainNumber < 1 || trainNumber > 999) {
